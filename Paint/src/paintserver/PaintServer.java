@@ -41,14 +41,14 @@ public class PaintServer extends Listener{
 		System.out.println("The server is ready");
 		com.esotericsoftware.minlog.Log.set(com.esotericsoftware.minlog.Log.LEVEL_TRACE);
 		
-		JFrame frame = new JFrame("Chat Server");
+		JFrame frame = new JFrame("Paint Server");
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosed (WindowEvent evt) {
 				server.stop();
 			}
 		});
-		frame.getContentPane().add(new JLabel("Close to stop the chat server."));
+		frame.getContentPane().add(new JLabel("Close to stop the paint server."));
 		frame.setSize(320, 200);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
