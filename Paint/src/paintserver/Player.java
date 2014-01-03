@@ -1,9 +1,11 @@
-import java.awt.Color;
+package paintserver;
+
 import com.esotericsoftware.kryonet.Connection;
 
 public class Player {
 	public int x, y, thickness;
-	public Color color;
+	public int color;
 	public boolean isdrawing;
 	public Connection c;
+	public String name;
 }

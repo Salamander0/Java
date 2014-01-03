@@ -8,7 +8,9 @@ public class NewPlayer {
 	public int oldx = 0;
 	public int oldy = 0;
 	public Color color = Color.BLACK;
-	public int thickness = 2;
+	public int col = 9;
+	public int thickness = 1;
 	public boolean isdrawing = false;
 	public int id;
+	public String name;
 }
