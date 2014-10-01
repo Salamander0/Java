@@ -28,7 +28,7 @@ class PadDraw extends JComponent{
 			public void mousePressed(MouseEvent e){
 				PadDraw.this.ThisPlayer.oldx = e.getX();
 				PadDraw.this.ThisPlayer.oldy = e.getY();
-				PaintWindow.chatPanel.addMessage("You are drawing");
+				//PaintWindow.chatPanel.addMessage("You are drawing");
 				
 				UpdateXY packet = new UpdateXY();
 				
@@ -40,11 +40,12 @@ class PadDraw extends JComponent{
 				packet.thickness = PadDraw.this.ThisPlayer.thickness;
 
 				Paint.network.client.sendUDP(packet);
-				
+				/*
 				ChatMessage packet2 = new ChatMessage();
 				packet2.name = PaintWindow.name;
 				packet2.message = ("is drawing");
 				Paint.network.client.sendUDP(packet2);
+				*/
 			}
 		});
 

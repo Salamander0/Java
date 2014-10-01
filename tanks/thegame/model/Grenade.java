@@ -11,7 +11,8 @@ package thegame.model;
 public class Grenade extends ModelObject {
 
     private Tank tank;
-    
+    private int lifeTime = 75;
+
     public Grenade(Tank tank, int x, int y, int direction) {
         super(x, y, direction);
         this.tank = tank;
@@ -19,6 +20,10 @@ public class Grenade extends ModelObject {
 
     public Tank getTank() {
         return tank;
+    }
+    public boolean notVisible() {
+        lifeTime--;
+        return (lifeTime>0)? false:true;
     }
 
     public void move() {

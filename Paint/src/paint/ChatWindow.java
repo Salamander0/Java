@@ -21,7 +21,7 @@ public class ChatWindow extends JPanel {
 	JTextField sendText;
 	JButton sendButton;
 	
-	public ChatWindow () {
+	public ChatWindow(){
 		this.setSize(new Dimension(270, 600));
 		JPanel panel = new JPanel(new BorderLayout());
 		this.add(panel, "chat");
@@ -33,7 +33,9 @@ public class ChatWindow extends JPanel {
 			
 			this.messageList.setModel(new DefaultListModel());
 			DefaultListSelectionModel disableSelections = new DefaultListSelectionModel() {
-				public void setSelectionInterval (int index0, int index1) {	}
+				public void setSelectionInterval (int index0, int index1) {
+					//override!!!
+				}
 			};
 			
 		this.messageList.setSelectionModel(disableSelections);{

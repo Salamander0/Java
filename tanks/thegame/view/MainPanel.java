@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -30,7 +31,7 @@ public class MainPanel extends javax.swing.JPanel {
     //BufferedImage background;
     BufferedImage tankImage;
     List<ModelObject> model;
-
+    
     int currentWindowX = 0, currentWindowY = 0;
 
     /**
@@ -44,7 +45,9 @@ public class MainPanel extends javax.swing.JPanel {
         } catch (IOException ex) {
         }
     }
-
+    
+    
+    
     public void addToCurrentWindowX(int increment) {
         this.currentWindowX += increment;
         if (currentWindowX < 0) {
@@ -53,7 +56,7 @@ public class MainPanel extends javax.swing.JPanel {
         if (currentWindowX > GameData.GAME_WIDTH - GameData.WINDOW_WIDTH) {
             currentWindowX = GameData.GAME_WIDTH - GameData.WINDOW_WIDTH;
         }
-
+        
     }
 
     public void addToCurrentWindowY(int increment) {
@@ -64,6 +67,53 @@ public class MainPanel extends javax.swing.JPanel {
         if (currentWindowY > GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH) {
             currentWindowY = GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH;
         }
+        
+    }
+    public void setViewOnPoint(Point point){
+        this.currentWindowX = point.x;
+        point.x-=GameData.WINDOW_WIDTH/2;
+        if (currentWindowX < 0) {
+            this.currentWindowX = 0;
+        }
+        if (currentWindowX > GameData.GAME_WIDTH - GameData.WINDOW_WIDTH) {
+            currentWindowX = GameData.GAME_WIDTH - GameData.WINDOW_WIDTH;
+        }
+        
+        
+        this.currentWindowY = point.y;
+        point.y-=GameData.WINDOW_HEIGTH/2;
+        if (currentWindowY < 0) {
+            currentWindowY = 0;
+        }
+        if (currentWindowY > GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH) {
+            currentWindowY = GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH;
+        }
+    }
+    public void setViewOnTank(thegame.model.ModelPlayer player) {
+        for (ModelObject o : model) {
+            if (o instanceof Tank) {
+                Tank tank = (Tank) o;
+                if (tank.getPlayer().equals(player)) {
+                    this.currentWindowX = tank.getX() - GameData.WINDOW_WIDTH / 2;
+                    this.currentWindowY = tank.getY() - GameData.WINDOW_HEIGTH / 2;
+                }
+            }
+        }
+
+        if (currentWindowY < 0) {
+            currentWindowY = 0;
+        }
+        if (currentWindowY > GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH) {
+            currentWindowY = GameData.GAME_HEIGTH - GameData.WINDOW_HEIGTH;
+        }
+
+        if (currentWindowX < 0) {
+            this.currentWindowX = 0;
+        }
+        if (currentWindowX > GameData.GAME_WIDTH - GameData.WINDOW_WIDTH) {
+            currentWindowX = GameData.GAME_WIDTH - GameData.WINDOW_WIDTH;
+        }
+        
     }
 
     private int convertX(int x) {
@@ -102,7 +152,7 @@ public class MainPanel extends javax.swing.JPanel {
                                 convertY(tank.getY() - GameData.TANK_SIZE / 2),
                                 null);
                         g.drawString(tank.getPlayer().getRealPlayer().getName(),
-                                convertX(tank.getX()-GameData.TANK_SIZE / 2),
+                                convertX(tank.getX() - GameData.TANK_SIZE / 2),
                                 convertY(tank.getY() - GameData.TANK_SIZE / 2));
 
                     }

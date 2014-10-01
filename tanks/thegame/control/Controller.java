@@ -19,9 +19,42 @@ import thegame.model.Grenade;
 import thegame.model.ModelObject;
 import thegame.model.ModelPlayer;
 import thegame.model.Tank;
+import thegame.players.Ardente;
+import thegame.players.BRE0084;
+import thegame.players.Bagzila;
+import thegame.players.Dificult;
 import thegame.players.HopelessPlayer;
 import thegame.players.StupidPlayer;
-//import thegame.players.Sypula;
+import thegame.players.Hanz;
+import thegame.players.HonzikPlayer;
+import thegame.players.JiriPlayer;
+import thegame.players.Jurasek;
+import thegame.players.KneysPlayer;
+import thegame.players.Kol0232;
+import thegame.players.MartinPlayer;
+import thegame.players.MotakPlayer;
+import thegame.players.MyAI;
+import thegame.players.MyGamePlayer;
+import thegame.players.MyPlayer;
+import thegame.players.PJO0001;
+import thegame.players.Pavel;
+import thegame.players.SCH0177;
+import thegame.players.SIR0029;
+import thegame.players.SWA0010;
+import thegame.players.Strigo33;
+import thegame.players.Sypula;
+import thegame.players.TomPlayer;
+import thegame.players.VNE0005;
+import thegame.players.VYB0028;
+import thegame.players.ZAK0049;
+import thegame.players.ZDZ0005;
+import thegame.players.ZUR;
+import thegame.players.boc0040;
+import thegame.players.cec0080;
+import thegame.players.pop0041;
+import thegame.players.sme0061;
+import thegame.players.Salamander;
+import thegame.players.GUN0018;
 import thegame.view.TheGameView;
 
 /**
@@ -47,15 +80,43 @@ public class Controller {
 
     private void initializeGame() {
         players.clear();
-        players.add(new ModelPlayer(new HopelessPlayer()));
-        players.add(new ModelPlayer(new HopelessPlayer()));
-        players.add(new ModelPlayer(new StupidPlayer()));
-        players.add(new ModelPlayer(new StupidPlayer()));
- //       players.add(new ModelPlayer(new Sypula()));
- //       players.add(new ModelPlayer(new Sypula()));
+        players.add(new ModelPlayer(new Salamander()));
+        players.add(new ModelPlayer(new GUN0018()));
+//        players.add(new ModelPlayer(new Hanz()));
+//        players.add(new ModelPlayer(new BRE0084()));
+//        players.add(new ModelPlayer(new pop0041()));
+//        players.add(new ModelPlayer(new VNE0005()));
+//        players.add(new ModelPlayer(new ZDZ0005()));
+//        players.add(new ModelPlayer(new ZAK0049()));
+//        players.add(new ModelPlayer(new Sypula()));
+//        players.add(new ModelPlayer(new SIR0029()));
+//        players.add(new ModelPlayer(new PJO0001()));
+        players.add(new ModelPlayer(new Dificult()));
+//        players.add(new ModelPlayer(new Pavel()));
+//        players.add(new ModelPlayer(new VYB0028()));
+//        players.add(new ModelPlayer(new MyPlayer()));
+//        players.add(new ModelPlayer(new MotakPlayer()));
+//        players.add(new ModelPlayer(new MyGamePlayer()));
+//        players.add(new ModelPlayer(new Bagzila()));
+//        players.add(new ModelPlayer(new KneysPlayer()));
+//        players.add(new ModelPlayer(new sme0061()));
+//        players.add(new ModelPlayer(new boc0040()));
+//        players.add(new ModelPlayer(new Strigo33()));
+//        players.add(new ModelPlayer(new Ardente()));
+//        players.add(new ModelPlayer(new MartinPlayer()));
+//        players.add(new ModelPlayer(new MyAI()));
+//        players.add(new ModelPlayer(new HonzikPlayer()));
+//        players.add(new ModelPlayer(new JiriPlayer()));
+//        players.add(new ModelPlayer(new TomPlayer()));
+//        players.add(new ModelPlayer(new Jurasek()));
+//        players.add(new ModelPlayer(new SWA0010()));
+//        players.add(new ModelPlayer(new Kol0232()));
+//        players.add(new ModelPlayer(new SCH0177()));
+//        players.add(new ModelPlayer(new ZUR()));
+//        players.add(new ModelPlayer(new cec0080()));
         objects.clear();
         Random r = new Random();
-        for(ModelPlayer p : players) {
+        for (ModelPlayer p : players) {
             objects.add(new Tank(p, r.nextInt(GameData.GAME_WIDTH),
                     r.nextInt(GameData.GAME_HEIGTH), r.nextInt(360)));
         }
@@ -69,6 +130,7 @@ public class Controller {
         running = true;
         view.updateModel(objects, players);
         thread = new Thread() {
+
             @Override
             public void run() {
                 while (running) {
@@ -82,6 +144,12 @@ public class Controller {
                                     toRemove.add(o);
                                 }
                             }
+                            if (o instanceof Grenade) {
+                                if (((Grenade) o).notVisible()) {
+                                    toRemove.add(o);
+                                }
+                            }
+
                         }
                         objects.removeAll(toRemove);
                         toRemove.clear();
@@ -128,11 +196,11 @@ public class Controller {
                                         }
                                     }
                                 }
-                                Grenade g=null;
+                                Grenade g = null;
                                 try {
                                     Command command = tank.getPlayer().getRealPlayer().planNextMove(info);
                                     g = tank.doCommand(command);
-                                }catch(Exception e) {
+                                } catch (Exception e) {
                                     tank.getPlayer().decrementScore();
                                 }
                                 tank.getPlayer().incrementScore();

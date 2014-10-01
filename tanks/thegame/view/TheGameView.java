@@ -5,6 +5,7 @@
 package thegame.view;
 
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import thegame.control.Controller;
+import thegame.model.GameData;
 import thegame.model.ModelObject;
 import thegame.model.ModelPlayer;
 
@@ -43,11 +45,11 @@ public class TheGameView extends javax.swing.JFrame {
                     int i = 0;
                     Collections.sort(players);
                     for (ModelPlayer p : players) {
-                         
+
                         data[i][0]=p.getRealPlayer().getName()+"("+p.getShoots()+","+p.getKills()+") -"+p.getScore();
                         i++;
                     }
-                    
+
                     playersTable.setModel(new DefaultTableModel(data, new String[]{"Score"}));
                 }
 
@@ -60,6 +62,7 @@ public class TheGameView extends javax.swing.JFrame {
 
     public void updateModel(List<ModelObject> model, List<ModelPlayer> players) {
         mainPanel.updateModel(model);
+        minimap1.updateModel(model);
         this.players = players;
     }
 
@@ -76,6 +79,7 @@ public class TheGameView extends javax.swing.JFrame {
         stratButton = new javax.swing.JButton();
         stopButton = new javax.swing.JButton();
         mainPanel = new thegame.view.MainPanel();
+        minimap1 = new thegame.view.Minimap();
         jScrollPane1 = new javax.swing.JScrollPane();
         playersTable = new javax.swing.JTable();
 
@@ -109,15 +113,38 @@ public class TheGameView extends javax.swing.JFrame {
             }
         });
 
+        minimap1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimap1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout minimap1Layout = new javax.swing.GroupLayout(minimap1);
+        minimap1.setLayout(minimap1Layout);
+        minimap1Layout.setHorizontalGroup(
+            minimap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 191, Short.MAX_VALUE)
+        );
+        minimap1Layout.setVerticalGroup(
+            minimap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 133, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(minimap1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 508, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(minimap1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
         );
 
         playersTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -132,6 +159,12 @@ public class TheGameView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        playersTable.setFocusable(false);
+        playersTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                playersTableMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(playersTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,12 +180,12 @@ public class TheGameView extends javax.swing.JFrame {
                         .addComponent(stratButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(stopButton)
-                        .addGap(0, 440, Short.MAX_VALUE))
+                        .addGap(0, 437, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(133, 133, 133))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,7 +198,7 @@ public class TheGameView extends javax.swing.JFrame {
                         .addComponent(stopButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -178,19 +211,25 @@ public class TheGameView extends javax.swing.JFrame {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 mainPanel.addToCurrentWindowX(-100);
+
                 break;
             case KeyEvent.VK_RIGHT:
                 mainPanel.addToCurrentWindowX(100);
+
                 break;
             case KeyEvent.VK_UP:
                 mainPanel.addToCurrentWindowY(-100);
+
                 break;
             case KeyEvent.VK_DOWN:
                 mainPanel.addToCurrentWindowY(100);
+
                 break;
             default:
         }
         mainPanel.repaint();
+        minimap1.updateView(mainPanel.currentWindowX, mainPanel.currentWindowY);
+        minimap1.repaint();
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
@@ -211,10 +250,32 @@ public class TheGameView extends javax.swing.JFrame {
         updateScore.stop();
         this.requestFocus();
     }//GEN-LAST:event_stopButtonActionPerformed
+
+    private void playersTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playersTableMousePressed
+        Point point=new Point(evt.getX(),evt.getY());
+        mainPanel.setViewOnTank(players.get(playersTable.rowAtPoint(point)));
+        mainPanel.repaint();
+        minimap1.updateView(mainPanel.currentWindowX, mainPanel.currentWindowY);
+        minimap1.repaint();
+        this.requestFocus();
+    }//GEN-LAST:event_playersTableMousePressed
+
+    private void minimap1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimap1MouseClicked
+        Point point=new Point(evt.getX(),evt.getY());
+        point.x=point.x*(GameData.GAME_WIDTH/GameData.MINIMAP_WIDTH);
+        point.y=point.y*(GameData.GAME_HEIGTH/GameData.MINIMAP_HEIGTH);
+        mainPanel.setViewOnPoint(point);
+        mainPanel.repaint();
+        minimap1.updateView(mainPanel.currentWindowX, mainPanel.currentWindowY);
+        minimap1.repaint();
+        this.requestFocus();
+    }//GEN-LAST:event_minimap1MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel headLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private thegame.view.MainPanel mainPanel;
+    private thegame.view.Minimap minimap1;
     private javax.swing.JTable playersTable;
     private javax.swing.JButton stopButton;
     private javax.swing.JButton stratButton;

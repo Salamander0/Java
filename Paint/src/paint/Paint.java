@@ -104,7 +104,7 @@ class PaintWindow 	extends JFrame
         }
     }
 
-	public void makeColorButton(final Color color, final int col){
+	private void makeColorButton(final Color color, final int col){
 		JButton tempButton = new JButton();
 		tempButton.setPreferredSize(new Dimension(20, 20));
 		tempButton.setBackground(color);
